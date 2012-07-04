@@ -53,7 +53,7 @@ class PurchasesController < ApplicationController
         count = 0
         purchases_data = Array.new(@purchase.quantity).map do |e|
           count += 1
-          { "id" => "#{@purchase.order_id}-#{count}",
+          { "id" => @purchase.order_id,
             "product-id" => @purchase.product.id,
             "product-name" => @purchase.product.name,
             "customer-id" => 150,
