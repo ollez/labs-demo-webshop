@@ -7,6 +7,9 @@ gem 'rails', '3.2.3'
 
 gem 'sqlite3'
 
+# DR Labs specific gem
+gem 'glue', git: 'git@github.com:ollez/labs-glue-driver.git'
+
 
 # Gems used only for assets and not required
 # in production environments by default.

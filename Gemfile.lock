@@ -1,3 +1,10 @@
+GIT
+  remote: git@github.com:ollez/labs-glue-driver.git
+  revision: dff505d307346c735b740ed82058d3bb1602686b
+  specs:
+    glue (0.0.1)
+      activesupport
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -127,6 +134,7 @@ PLATFORMS
 DEPENDENCIES
   coffee-rails (~> 3.2.1)
   compass-rails
+  glue!
   jquery-rails
   rails (= 3.2.3)
   sass-rails (~> 3.2.3)

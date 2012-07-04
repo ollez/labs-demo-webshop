@@ -1,3 +1,5 @@
+require 'glue'
+
 class PurchasesController < ApplicationController
   include ActionView::Helpers::TextHelper
 
@@ -46,6 +48,8 @@ class PurchasesController < ApplicationController
 
     respond_to do |format|
       if @purchase.save
+        glue_flow.send_data({:purchases => Array.new(@purchase.quantity).map{|e| {"product-name" => @purchase.product.name } } }.to_json)
+
         format.html { redirect_to products_path, notice: "Thank you for your purchase of #{pluralize(@purchase.quantity, "unit")} of \"#{@purchase.product.name}\"! (order id ##{@purchase.order_id})" }
         format.json { render json: @purchase, status: :created, location: @purchase }
       else
@@ -82,4 +86,15 @@ class PurchasesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  protected
+
+    def glue
+    @glue ||= Glue.new url: Rails.configuration.glue_base_url
+  end
+
+  def glue_flow
+    @glue_flow ||= glue.flow(reference: Rails.configuration.flow_reference)
+  end
+
 end
