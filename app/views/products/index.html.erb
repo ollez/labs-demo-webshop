@@ -1,0 +1,26 @@
+<%- model_class = Product.new.class -%>
+<h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+
+<div class="row">
+    <% @products.each do |product| %>
+  <div class="span3 product">
+
+        <div><%= image_tag "#{product.name.downcase.gsub(/\s/, '-')}.jpg" %></div>
+        <h3><%= link_to product.name, product %></h3>
+        <p><%= truncate product.description, length: 300 %></p>
+        <p>
+        <h4><%= product.price %> SEK</h4>
+        <div>
+          <%= form_for product.purchases.new(quantity: 1) do |f| %>
+            <%= f.hidden_field :product_id %>
+            <%= f.text_field :quantity, size: 5, placeholder: "Qty..." %>
+            <%= f.submit "Buy", class: 'btn btn-primary' %>
+          <% end -%>
+        </div>
+        </p>
+      </tr>
+  </div>
+    <% end %>
+</div>
+
+
