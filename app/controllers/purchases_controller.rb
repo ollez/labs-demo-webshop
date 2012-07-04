@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'glue'
 
 class PurchasesController < ApplicationController
@@ -48,7 +50,17 @@ class PurchasesController < ApplicationController
 
     respond_to do |format|
       if @purchase.save
-        glue_flow.send_data({:purchases => Array.new(@purchase.quantity).map{|e| {"product-name" => @purchase.product.name } } }.to_json)
+        count = 0
+        purchases_data = Array.new(@purchase.quantity).map do |e|
+          count += 1
+          { "id" => "#{@purchase.order_id}-#{count}",
+            "product-id" => @purchase.product.id,
+            "product-name" => @purchase.product.name,
+            "customer-id" => 150,
+            "customer-first-name" => "Olle",
+            "customer-last-name" => "Martensson" }
+        end
+        glue_flow.send_data({"batch-id" => @purchase.order_id, "purchases" => purchases_data }.to_json)
 
         format.html { redirect_to products_path, notice: "Thank you for your purchase of #{pluralize(@purchase.quantity, "unit")} of \"#{@purchase.product.name}\"! (order id ##{@purchase.order_id})" }
         format.json { render json: @purchase, status: :created, location: @purchase }
