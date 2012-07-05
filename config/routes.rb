@@ -2,6 +2,7 @@ LabsDemoWebshop::Application.routes.draw do
   resources :purchases
 
   resources :products
+  resources :settings
   root to: 'products#index'
 
   # The priority is based upon order of creation:

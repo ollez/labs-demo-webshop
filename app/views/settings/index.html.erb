@@ -1,0 +1,4 @@
+<%= form_tag settings_url do %>
+  <p><%= text_field_tag :flow_data_url, session[:flow_data_url], placeholder: 'Data url' %></p>
+  <%= submit_tag "Save", class: 'btn btn-primary' %>
+<% end -%>

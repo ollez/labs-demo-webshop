@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'glue'
+require 'net/http'
 
 class PurchasesController < ApplicationController
   include ActionView::Helpers::TextHelper
@@ -60,7 +61,7 @@ class PurchasesController < ApplicationController
             "customer-first-name" => "Olle",
             "customer-last-name" => "Martensson" }
         end
-        glue_flow.send_data({"batch-id" => @purchase.order_id, "purchases" => purchases_data }.to_json)
+        send_data({"batch-id" => @purchase.order_id, "purchases" => purchases_data }.to_json)
 
         format.html { redirect_to products_path, notice: "Thank you for your purchase of #{pluralize(@purchase.quantity, "unit")} of \"#{@purchase.product.name}\"! (order id ##{@purchase.order_id})" }
         format.json { render json: @purchase, status: :created, location: @purchase }
@@ -98,10 +99,19 @@ class PurchasesController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   protected
 
-    def glue
+  def send_data(data)
+    uri = URI(session[:flow_data_url])
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.body = data
+
+    http.request(request)
+  end
+
+  def glue
     @glue ||= Glue.new url: Rails.configuration.glue_base_url
   end
 
