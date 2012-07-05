@@ -55,11 +55,11 @@ class PurchasesController < ApplicationController
         purchases_data = Array.new(@purchase.quantity).map do |e|
           count += 1
           { "id" => @purchase.order_id,
-            "product-id" => @purchase.product.id,
-            "product-name" => @purchase.product.name,
-            "customer-id" => 150,
-            "customer-first-name" => "Olle",
-            "customer-last-name" => "Martensson" }
+            "productId" => @purchase.product.id,
+            "productName" => @purchase.product.name,
+            "customerId" => 150,
+            "customerFirstName" => "Olle",
+            "customerLastName" => "Martensson" }
         end
         send_data({"batch-id" => @purchase.order_id, "purchases" => purchases_data }.to_json)
 
